@@ -69,9 +69,23 @@ router.get("/:id", async (req, res) => {
 
 // GET POSTS
 router.get("/", async (req, res) => {
+  const username = req.query.user;
+  const catName = req.query.cat;
+
   try {
-    const posts = await Post.find();
-    // const { password, ...others } = users._doc;
+    let posts;
+
+    if (username) {
+      posts = await Post.find({ username: username });
+    } else if (catName) {
+      posts = await Post.find({
+        categories: {
+          $in: [catName], // it basically says look in this categories array and if inside include this catName just find this and assign to posts
+        },
+      });
+    } else {
+      posts = await Post.find();
+    }
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
