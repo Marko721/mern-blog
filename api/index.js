@@ -9,7 +9,7 @@ const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 
 dotenv.config();
-app.use(express.json());
+app.use(express.json()); // Express provides you with middleware to deal with the (incoming) data (object) in the body of the request.
 
 mongoose
   .connect(process.env.MONGO_URL)
